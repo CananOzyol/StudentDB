@@ -18,14 +18,14 @@ public class StudentDBTest {
     @Test
     public void testFindByld_ExistingId_ReturnsStudent() {
         try {
-            // Arrange
+
             String searchId = "1";
             String expectedName = "Max Mustermann";
 
-            // Act
+
             Student foundStudent = studentDB.findByld(searchId);
 
-            // Assert
+
             Assertions.assertNotNull(foundStudent);
             Assertions.assertEquals(expectedName, foundStudent.getName());
         } catch (StudentNotFoundException e) {
@@ -35,10 +35,10 @@ public class StudentDBTest {
 
     @Test
     public void testFindByld_NonExistingId_ThrowsStudentNotFoundException() {
-        // Arrange
+
         String searchId = "3";
 
-        // Act & Assert
+
         Assertions.assertThrows(StudentNotFoundException.class, () -> {
             studentDB.findByld(searchId);
         });
