@@ -2,22 +2,23 @@ package org.example;
 
 import org.example.Student.Student;
 import org.example.Student.StudentDB;
+import org.example.Student.StudentNotFoundException;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        StudentDB database = new StudentDB();
+        database.addStudent(new Student("1", "Max Mustermann"));
+        database.addStudent(new Student("2", "Erika Musterfrau"));
 
-    Student student1 = new Student("Canan", "101");
-    Student student2 = new Student("Yunus", "102");
-    Student student3 = new Student("Claudia", "103");
+        String searchId = "3";
 
-    Student[] students = new Student[]{student1, student2, student3};  // Array übergeben!!!!!
-    StudentDB studentDatabase = new StudentDB(students);
-
-
-    System.out.println(studentDatabase.getAllStudents());
-    System.out.println(studentDatabase.toString());
-    System.out.println(studentDatabase.randomStudent());
+        try {
+            Student foundStudent = database.findByld(searchId);
+            System.out.println("Student found: ID = " + foundStudent.getId() + ", Name = " + foundStudent.getName());
+        } catch (StudentNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

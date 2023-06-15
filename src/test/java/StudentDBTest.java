@@ -1,45 +1,43 @@
 import org.example.Student.Student;
 import org.example.Student.StudentDB;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-
-
 public class StudentDBTest {
-    @Test
-    void yieldTrue_areAllStudentCalled(){
-        // given:
-        Student student1 = new Student("Canan", "101");
-        Student student2 = new Student("Claudia", "102");
-        Student student3 = new Student("Laura", "103");
+    private StudentDB studentDB;
 
-        Student[] students = new Student[]{student1,student2,student3};
-        StudentDB studentDB = new StudentDB(students);
-        // when:
-        Student[] expected = new Student[]{student1,student2,student3};
-        Student[] actual = studentDB.getAllStudents();
-        // then:
-        assertArrayEquals(expected, actual);
+    @BeforeEach
+    public void setup() {
+        studentDB = new StudentDB();
+        studentDB.addStudent(new Student("1", "Max Mustermann"));
+        studentDB.addStudent(new Student("2", "Erika Musterfrau"));
     }
 
     @Test
-    void yieldTrue_outputToString(){
-        // given:
-        Student student11 = new Student("Canan", "101");
-        Student student21 = new Student("Claudia", "102");
-        Student student31 = new Student("Laura", "103");
-        Student[] students1 = new Student[]{student11,student21,student31};
-        StudentDB studentDB = new StudentDB(students1);
+    public void testFindByld_ExistingId_ReturnsStudent() {
+        try {
 
-        // when:
-        Student[] expected = new Student[]{student11,student21,student31};
-        String expectedString = Arrays.deepToString(expected);
-        String actualString = studentDB.toString();
+            String searchId = "1";
+            String expectedName = "Max Mustermann";
 
-        // then:
-        Assertions.assertFalse(expectedString.equals(actualString));
+            Student foundStudent = studentDB.findByld(searchId);
+
+            Assertions.assertNotNull(foundStudent);
+            Assertions.assertEquals(expectedName, foundStudent.getName());
+        } catch (StudentDB.StudentNotFoundException e) {
+            Assertions.fail("Exception thrown unexpectedly: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testFindByld_NonExistingId_ThrowsStudentNotFoundException() {
+        // Arrange
+        String searchId = "3";
+
+        // Act & Assert
+        Assertions.assertThrows(StudentDB.StudentNotFoundException.class, () -> {
+            studentDB.findByld(searchId);
+        });
     }
 }
